@@ -26,7 +26,7 @@ export class Product{
     return this._cena;
   }
   get suma(){
-    return this._suma;
+    return Number(this._suma);
   }
   nowaSuma(){
     this._suma = this._ilosc * this._cena;
