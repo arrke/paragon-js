@@ -1,10 +1,22 @@
 export function zapisz(produkty){
-  localStorage.listaProduktow = JSON.stringify(produkty)
-  alert("Zapisano poprawnię listę zakupów!")
+  if(produkty.length != 0){
+    localStorage.listaProduktow = JSON.stringify(produkty)
+    localStorage.sumaListyProduktow = JSON.stringify(
+      produkty.map((obj) => obj._suma).reduce((prev,nast) => prev+nast)
+    )
+    alert("Zapisano poprawnię listę zakupów!")
+  }
+  else{
+    alert("Brak elementów do zapisania")
+  }
 }
 
 export function wyczysc(produkty){
-  localStorage.removeItems("listaProduktow")
-  produkty = []
-  alert("Wyczyszczono listę zakupów!")
+  if(produkty.length != 0){
+    localStorage.removeItem("listaProduktow")
+    localStorage.removeItem("sumaListyProduktow")
+    produkty = []
+    document.getElementById('paragon').innerHTML=''
+    alert("Wyczyszczono listę zakupów!")
+  }
 }

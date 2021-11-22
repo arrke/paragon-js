@@ -12,6 +12,8 @@ if(localStorage.listaProduktow){
 }
 else{
   produkty = []
+  document.getElementById('wyczysc').disabled = true
+  document.getElementById('zapisz').disabled = true
 }
 if(localStorage.sumaListyProduktow){
   suma = JSON.parse(localStorage.sumaListyProduktow)
@@ -34,6 +36,10 @@ function dodajProdukt(e){
     console.log(produkty)
     alert(`Dodano produkt ${produkt.nazwa}`)
     produkty.push(produkt)
+    if(produkty.length != 0){
+      document.getElementById('wyczysc').disabled = false
+      document.getElementById('zapisz').disabled = false
+    }
     localStorage.listaProduktow = JSON.stringify(produkty)
     localStorage.sumaListyProduktow = JSON.stringify(suma+produkt._suma)
     suma = suma+product._suma
@@ -48,10 +54,13 @@ function dodajProdukt(e){
 }
 
 
-document.getElementById('zapisz').addEventListener('click', () => {
+document.getElementById('zapisz').addEventListener('click', (e) => {
   zapisz(produkty);
+  e.preventDefault();
 })
 
-document.getElementById('wyczysc').addEventListener('click', () => {
+document.getElementById('wyczysc').addEventListener('click', (e) => {
   wyczysc(produkty)
+  e.preventDefault();
+
 })
