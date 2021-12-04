@@ -7,6 +7,7 @@ form.onsubmit = dodajProdukt;
 let paragon = document.getElementById('paragon')
 let produkty;
 let suma;
+let wszystko=0;
 if(localStorage.listaProduktow){
   produkty = JSON.parse(localStorage.listaProduktow)
 }
@@ -33,9 +34,9 @@ function dodajProdukt(e){
   let cena = form.elements['cena'].value;
   if(nazwa && ilosc && cena){
     let produkt = new Product(nazwa,ilosc,cena)
-    console.log(produkty)
     alert(`Dodano produkt ${produkt.nazwa}`)
     produkty.push(produkt)
+    console.log(produkty);
     if(produkty.length != 0){
       document.getElementById('wyczysc').disabled = false
       document.getElementById('zapisz').disabled = false
@@ -52,7 +53,6 @@ function dodajProdukt(e){
   }
   e.preventDefault();
 }
-
 
 document.getElementById('zapisz').addEventListener('click', (e) => {
   zapisz(produkty);

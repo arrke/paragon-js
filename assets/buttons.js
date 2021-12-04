@@ -15,6 +15,7 @@ export function wyczysc(produkty){
   if(produkty.length != 0){
     localStorage.removeItem("listaProduktow")
     localStorage.removeItem("sumaListyProduktow")
+    console.log("wypisz");
     produkty = []
     document.getElementById('paragon').innerHTML=''
     alert("Wyczyszczono listę zakupów!")
