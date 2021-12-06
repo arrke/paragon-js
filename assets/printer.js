@@ -6,9 +6,6 @@ export function wypiszListeProdukty(produkty, suma) {
   dodajColumny();
   for (let i = 0; i < produkty.length; i++) {
     wypisz(i, produkty[i], produkty)
-    //console.log(produkty[i]._suma)
-    //wszystko+=produkty[i]._suma;
-
   }
   wypiszSume(suma);
 }
@@ -21,6 +18,8 @@ export function wypisz(i, produkt, produkty) {
   stworzKomorke(tr, produkt._cena)
   stworzKomorke(tr, produkt._suma)
   stworzPrzyciskiAkcji(tr, produkty)
+  if(paragon.innerText == '')
+    dodajColumny()
   paragon.appendChild(tr)
 }
 
@@ -65,7 +64,6 @@ function stworzPrzyciskiAkcji(tr, produkty) {
       produkty[id] = produkty[id - 1]
       produkty[id - 1] = tmp
       let suma = document.getElementById('suma').innerHTML.split(' ')[1]
-      console.log(suma)
       document.getElementById('paragon').innerHTML = ''
       wypiszListeProdukty(produkty, suma)
     }
@@ -80,7 +78,6 @@ function stworzPrzyciskiAkcji(tr, produkty) {
       produkty[id] = produkty[id + 1]
       produkty[id + 1] = tmp
       let suma = document.getElementById('suma').innerHTML.split(' ')[1]
-      console.log(suma)
       document.getElementById('paragon').innerHTML = ''
       wypiszListeProdukty(produkty, suma)
     }
@@ -92,30 +89,43 @@ function stworzPrzyciskiAkcji(tr, produkty) {
     let id = Number(event.target.parentNode.parentNode.firstChild.innerText);
     produkty.splice(id, 1)
     document.getElementById('paragon').innerHTML = ''
-    wypiszListeProdukty(produkty, produkty.map((obj) => obj._suma).reduce((prev, nast) => prev + nast))
+    wypiszListeProdukty(produkty,zwrocSume(produkty))
   })
 
   td.appendChild(button)
   button = document.createElement('button')
   button.innerHTML = 'edit'
   button.addEventListener('click', (event) => {
-    let nowaNazwa = prompt("Podaj nową Nazwę")
-    let nowaIlosc = prompt("Podaj nową Ilosc")
-    let nowaCena = prompt("Podaj nową Cena")
+    let id = Number(event.target.parentNode.parentNode.firstChild.innerText);
+    let nowaNazwa = prompt("Podaj nową Nazwę",produkty[id]._nazwa)
+    let nowaIlosc = prompt("Podaj nową Ilosc",produkty[id]._ilosc)
+    while(isNaN(nowaIlosc)){
+      nowaIlosc = prompt("Nie podano numeru. Podaj nową ilość",produkty[id]._ilosc)
+    }
+    let nowaCena = prompt("Podaj nową cenę",produkty[id]._cena)
+    while(isNaN(nowaCena)){
+      nowaCena = prompt("Nie podano numeru. Podaj nową cenę",produkty[id]._cena)
+    }
+
     if (nowaNazwa && nowaIlosc && nowaIlosc) {
       let id = Number(event.target.parentNode.parentNode.firstChild.innerText);
       console.log(produkty[id])
       produkty[id]._nazwa = nowaNazwa
       produkty[id]._ilosc = nowaIlosc
-      produkty[id]._cena = nowaCena
-      produkty[id]._suma = nowaIlosc * nowaCena
+      produkty[id]._cena = Number(nowaCena).toFixed(2)
+      produkty[id]._suma = Number(nowaIlosc * nowaCena).toFixed(2)
       console.log(produkty[id])
       document.getElementById('paragon').innerHTML = ''
-      wypiszListeProdukty(produkty, produkty.map((obj) => obj._suma).reduce((prev, nast) => prev + nast))
+      wypiszListeProdukty(produkty, zwrocSume(produkty))
     }
     else
       alert("Popraw dane")
   })
   td.appendChild(button)
   tr.appendChild(td)
+}
+
+
+export function zwrocSume(produkty){
+  return produkty.length !== 0 ? produkty.map((obj) => obj._suma).reduce((prev,nast) => (Number(prev)+Number(nast)).toFixed(2)) : 0
 }

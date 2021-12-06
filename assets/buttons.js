@@ -1,9 +1,6 @@
 export function zapisz(produkty){
   if(produkty.length != 0){
     localStorage.listaProduktow = JSON.stringify(produkty)
-    localStorage.sumaListyProduktow = JSON.stringify(
-      produkty.map((obj) => obj._suma).reduce((prev,nast) => prev+nast)
-    )
     alert("Zapisano poprawnię listę zakupów!")
   }
   else{
@@ -13,11 +10,16 @@ export function zapisz(produkty){
 
 export function wyczysc(produkty){
   if(produkty.length != 0){
-    localStorage.removeItem("listaProduktow")
-    localStorage.removeItem("sumaListyProduktow")
-    console.log("wypisz");
     produkty = []
+    localStorage.removeItem("listaProduktow")
     document.getElementById('paragon').innerHTML=''
+    document.getElementById("suma").innerText = ""
     alert("Wyczyszczono listę zakupów!")
+  }
+  else{
+    localStorage.removeItem("listaProduktow")
+    document.getElementById('paragon').innerHTML=''
+    document.getElementById("suma").innerText = ""
+    alert("Lista zakupów jest już pusta!")
   }
 }
